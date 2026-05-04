@@ -1,14 +1,16 @@
-import { QuartzConfig } from "./quartz/plugins"
-import { ContentPage, CreatedModifiedDate, Description, FrontmatterTags, FullTextSearch, Links, CrawlLinks, SyntaxHighlighting, TableOfContents, TagPage, FolderPage, IndexPage, TagContentIndex, FolderContentIndex, Graph, RecentNotes, NotFound } from "./quartz/plugins"
+import { QuartzConfig } from "./quartz/cfg"
+import * as Plugin from "./quartz/plugins"
 
 const config: QuartzConfig = {
   configuration: {
     pageTitle: "UP主观点汇总",
+    pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
     analytics: null,
+    locale: "zh-CN",
     baseUrl: "ppzzyy.github.io",
-    ignorePatterns: ["private", "templates"],
+    ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "created",
     theme: {
       fontOrigin: "googleFonts",
@@ -46,27 +48,40 @@ const config: QuartzConfig = {
   },
   plugins: {
     transformers: [
-      new FrontmatterTags(),
-      new CreatedModifiedDate({
+      Plugin.FrontMatter(),
+      Plugin.CreatedModifiedDate({
         priority: ["frontmatter", "filesystem"],
       }),
-      new Description(),
-      new CrawlLinks(),
-      new SyntaxHighlighting(),
-      new TableOfContents(),
-      new Links(),
+      Plugin.SyntaxHighlighting({
+        theme: {
+          light: "github-light",
+          dark: "github-dark",
+        },
+        keepBackground: false,
+      }),
+      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
+      Plugin.GitHubFlavoredMarkdown(),
+      Plugin.TableOfContents(),
+      Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
+      Plugin.Description(),
     ],
-    filters: [new ContentPage()],
+    filters: [
+      Plugin.RemoveDrafts(),
+    ],
     emitters: [
-      new TagPage(),
-      new FolderPage(),
-      new IndexPage(),
-      new TagContentIndex(),
-      new FolderContentIndex(),
-      new FullTextSearch(),
-      new Graph(),
-      new RecentNotes({ showTags: true }),
-      new NotFound(),
+      Plugin.AliasRedirects(),
+      Plugin.ComponentResources(),
+      Plugin.ContentPage(),
+      Plugin.FolderPage(),
+      Plugin.TagPage(),
+      Plugin.ContentIndex({
+        enableSiteMap: true,
+        enableRSS: true,
+      }),
+      Plugin.Assets(),
+      Plugin.Static(),
+      Plugin.Favicon(),
+      Plugin.NotFoundPage(),
     ],
   },
 }
