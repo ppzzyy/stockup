@@ -1,0 +1,13 @@
+{
+  "name": "up-fl",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UP主观点汇总 - Quartz静态站点",
+  "scripts": {
+    "build": "npx quartz build -d content",
+    "preview": "npx quartz build -d content --serve"
+  },
+  "dependencies": {
+    "quartz": "^4.5.2"
+  }
+}
