@@ -72,7 +72,7 @@ const config: QuartzConfig = {
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
       Plugin.ContentPage(),
-      Plugin.FolderPage(),
+      // FolderPage disabled — using custom MOC pages instead
       Plugin.TagPage(),
       Plugin.ContentIndex({
         enableSiteMap: true,
