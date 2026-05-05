@@ -35,7 +35,24 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      folderDefaultState: "open",
+      sortFn: (a, b) => {
+        if (a.isFolder !== b.isFolder) {
+          return a.isFolder ? -1 : 1
+        }
+        if (a.isFolder) {
+          return a.displayName.localeCompare(b.displayName, undefined, {
+            numeric: true,
+            sensitivity: "base",
+          })
+        }
+        return b.displayName.localeCompare(a.displayName, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        })
+      },
+    }),
   ],
   right: [
     Component.Graph(),
@@ -58,7 +75,23 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
-  ],
+    Component.Explorer({
+      folderDefaultState: "open",
+      sortFn: (a, b) => {
+        if (a.isFolder !== b.isFolder) {
+          return a.isFolder ? -1 : 1
+        }
+        if (a.isFolder) {
+          return a.displayName.localeCompare(b.displayName, undefined, {
+            numeric: true,
+            sensitivity: "base",
+          })
+        }
+        return b.displayName.localeCompare(a.displayName, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        })
+      },
+    }),
   right: [],
 }
